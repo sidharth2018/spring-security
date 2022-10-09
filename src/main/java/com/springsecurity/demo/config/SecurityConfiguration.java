@@ -15,30 +15,36 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.session.DisableEncodeUrlFilter;
 
 @EnableWebSecurity(debug=true)
 public class SecurityConfiguration {
 	
+	@Autowired
+	CustomFilter2 f;
 	
-//	@Bean
-//	public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity auth) throws Exception {
+	
+	@Bean
+	public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity auth) throws Exception {
 //		
-//		auth.authorizeHttpRequests()
-//		.antMatchers("/name","/orders").authenticated();
+		auth.authorizeHttpRequests()
+		.antMatchers("/name","/orders").authenticated();
 //		
 //		auth.authorizeHttpRequests().antMatchers("/contact","/about","/create").permitAll();
 //		auth.csrf().disable();
 //		auth.cors().disable();
-////		auth.httpBasic(Customizer.withDefaults());
+		auth.httpBasic(Customizer.withDefaults());
 ////		auth.addFilterAfter(new JwtGeneratorFilter(), BasicAuthenticationFilter.class);
 ////		auth.addFilterBefore(new JwtValidatorFilter(), BasicAuthenticationFilter.class);
-////		auth.addFilterBefore(new NonLoginUrlFilter(), UsernamePasswordAuthenticationFilter.class);
-//		return auth.build();
-//		
-//	}
+		auth.addFilterBefore(new NonLoginUrlFilter(), UsernamePasswordAuthenticationFilter.class);
+		return auth.build();
+		
+	}
 //	
 //	@Bean
 //	public InMemoryUserDetailsManager userService() {
@@ -58,13 +64,12 @@ public class SecurityConfiguration {
 //		return userds;
 //	}
 	
-//	@Bean 
-//	FilterRegistrationBean<CustomFilter2> fBean(){
-//		FilterRegistrationBean<CustomFilter2> b = new FilterRegistrationBean<CustomFilter2>();
-//		b.setFilter(new CustomFilter2());
-//		b.addUrlPatterns("/orders");
-//		return b;
-//	}
+	@Bean
+	FilterRegistrationBean<CustomFilter2> fBean(){
+		FilterRegistrationBean<CustomFilter2> b = new FilterRegistrationBean<CustomFilter2>();
+		b.setFilter(new CustomFilter2());
+		return b;
+	}
 //	
 //	@Bean 
 //	FilterRegistrationBean<JwtGeneratorFilter> gBean(){

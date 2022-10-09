@@ -9,9 +9,11 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
+@Order(0)
 public class CustomFilter1 implements Filter{
 
 	@Override
